@@ -110,29 +110,29 @@ bot.onText(/\/info/, function(msg, match) {
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "/stats"
 bot.onText(/\/stats/, function(msg, match) {
 
-    for (var i = 0; i < users.list.length; i++) {
-
-        exec('wc ' + path + 'logs/' + users.list[i].id.toString() + '.txt', function(err, file_data) {
-            var n_lines = file_data.toString().split(" ", 3);
-            var n_l = n_lines.slice(2, n_lines.length) - 1;
-            var tripcost = users.list[uget_index(userId)].cost;
-            var cost_sum = n_l * tripcost;
-
-            // FILE IO >>
-            // Make Stats File.
-            var n_rides = n_l;
-            var l1 = "NAME: " + userName + ", ";
-            var l2 = "RIDES: " + n_rides + ", ";
-            var l3 = "SUM: $" + cost_sum + "\n";
-
-            fs.writeFile(path + 'stats/' + userId + '.txt', l1 + l2 + l3, function(err) {
-                if(err) {
-                    bot.sendMessage(chatId, "ERROR: '/checkin' stats cannot be compiled.");
-                    console.log(chatId + " ERROR: '/checkin' stats cannot be compiled.");
-                }
-            });
-        }
-    }
+    // for (var i = 0; i < users.list.length; i++) {
+    //
+    //     exec('wc ' + path + 'logs/' + users.list[i].id.toString() + '.txt', function(err, file_data) {
+    //         var n_lines = file_data.toString().split(" ", 3);
+    //         var n_l = n_lines.slice(2, n_lines.length) - 1;
+    //         var tripcost = users.list[uget_index(userId)].cost;
+    //         var cost_sum = n_l * tripcost;
+    //
+    //         // FILE IO >>
+    //         // Make Stats File.
+    //         var n_rides = n_l;
+    //         var l1 = "NAME: " + userName + ", ";
+    //         var l2 = "RIDES: " + n_rides + ", ";
+    //         var l3 = "SUM: $" + cost_sum + "\n";
+    //
+    //         fs.writeFile(path + 'stats/' + userId + '.txt', l1 + l2 + l3, function(err) {
+    //             if(err) {
+    //                 bot.sendMessage(chatId, "ERROR: '/checkin' stats cannot be compiled.");
+    //                 console.log(chatId + " ERROR: '/checkin' stats cannot be compiled.");
+    //             }
+    //         });
+    //     }
+    // }
 
     var chatId = msg.chat.id;
     var userName = msg.from.first_name + ' ' + msg.from.last_name;
