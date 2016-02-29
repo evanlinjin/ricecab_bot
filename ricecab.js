@@ -110,22 +110,20 @@ bot.onText(/\/info/, function(msg, match) {
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "/stats"
 bot.onText(/\/stats/, function(msg, match) {
 
-    var n_lines, n_l, tripcost, cost_sum;
-    var n_rides, l1, l2, l3;
     for (var i = 0; i < users.list.length; i++) {
 
         exec('wc ' + path + 'logs/' + users.list[i].id.toString() + '.txt', function(err, file_data) {
-            n_lines = file_data.toString().split(" ", 3);
-            n_l = n_lines.slice(2, n_lines.length) - 1;
-            tripcost = users.list[uget_index(userId)].cost;
-            cost_sum = n_l * tripcost;
+            var n_lines = file_data.toString().split(" ", 3);
+            var n_l = n_lines.slice(2, n_lines.length) - 1;
+            var tripcost = users.list[uget_index(userId)].cost;
+            var cost_sum = n_l * tripcost;
 
             // FILE IO >>
             // Make Stats File.
-            n_rides = n_l;
-            l1 = "NAME: " + userName + ", ";
-            l2 = "RIDES: " + n_rides + ", ";
-            l3 = "SUM: $" + cost_sum + "\n";
+            var n_rides = n_l;
+            var l1 = "NAME: " + userName + ", ";
+            var l2 = "RIDES: " + n_rides + ", ";
+            var l3 = "SUM: $" + cost_sum + "\n";
 
             fs.writeFile(path + 'stats/' + userId + '.txt', l1 + l2 + l3, function(err) {
                 if(err) {
