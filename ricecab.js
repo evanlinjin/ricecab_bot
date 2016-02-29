@@ -115,20 +115,20 @@ bot.onText(/\/stats/, function(msg, match) {
         exec('wc ' + path + 'logs/' + users.list[i].id.toString() + '.txt', function(err, file_data) {
             var n_lines = file_data.toString().split(" ", 3);
             var n_l = n_lines.slice(2, n_lines.length) - 1;
-            var tripcost = users.list[uget_index(userId)].cost;
+            var tripcost = users.list[i].cost;
             var cost_sum = n_l * tripcost;
 
             // FILE IO >>
             // Make Stats File.
             var n_rides = n_l;
-            var l1 = "NAME: " + userName + ", ";
+            var l1 = "NAME: " + users.list[i].name + ", ";
             var l2 = "RIDES: " + n_rides + ", ";
             var l3 = "SUM: $" + cost_sum + "\n";
 
             fs.writeFile(path + 'stats/' + userId + '.txt', l1 + l2 + l3, function(err) {
                 if(err) {
-                    bot.sendMessage(chatId, "ERROR: '/checkin' stats cannot be compiled.");
-                    console.log(chatId + " ERROR: '/checkin' stats cannot be compiled.");
+                    bot.sendMessage(chatId, "ERROR: '/stats' refresh cannot be executed correctly.");
+                    console.log(chatId + "ERROR: '/stats' refresh cannot be executed correctly.");
                 }
             });
         });
