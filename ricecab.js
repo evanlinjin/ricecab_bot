@@ -11,25 +11,21 @@ var token = '216808904:AAFqAjnnVVpHmKU4ZsExIMNuUdZX8R49YSQ';
 var bot = new TelegramBot(token, {polling: true});
 var ricecab_id = -116496721;
 var bank_acc = '12-3086-0261060-00';
-//var tripcost = 1.5;
 var path = '/home/pi/ricecab_bot/';
 
 /////////////////////////////////////////////////////// Load "User Information":
 
-var users = {
-    "list" : [
-        { "id" : 133607928, "cost" : 2.52 }, // Evan Lin
-        { "id" : 177677828, "cost" : 0.48 }, // Honour Carmichael
-        { "id" : 177893563, "cost" : 1.52 }, // Carl Velasco
-        { "id" : 187936081, "cost" : 2.52 }, // Amy Lai
-        { "id" : 199377811, "cost" : 1.21 }  // Vincent Wolfgramm-Russel
-    ],
-    "num" : 5
-};
+var users = [
+    {id : 133607928, cost: 2.52}, // Evan Lin
+    {id : 177677828, cost: 0.48}, // Honour Carmichael
+    {id : 177893563, cost: 1.52}, // Carl Velasco
+    {id : 187936081, cost: 2.52}, // Amy Lai
+    {id : 199377811, cost: 1.21}  // Vincent Wolfgramm-Russel
+];
 
 function uget_index(id) {
-    for (var i = 0; i < users.list.length; i++) {
-        if (users.list[i] === id) {return i;}
+    for (var i = 0; i < users.length; i++) {
+        if (users[i].id === id) {return i;}
     }
     return 0;
 }
@@ -47,7 +43,7 @@ bot.onText(/\/checkin/, function(msg, match) {
     exec('wc ' + path + 'logs/' + userId + '.txt', function(err, file_data) {
         var n_lines = file_data.toString().split(" ", 3);
         var n_l = n_lines.slice(2, n_lines.length);
-        var tripcost = users.list[uget_index(userId)].cost;
+        var tripcost = users[uget_index(userId)].cost;
         var cost_sum = n_l * tripcost + tripcost;
 
         // DATA STRING >>
