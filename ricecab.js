@@ -113,6 +113,18 @@ bot.onText(/\/stats/, function(msg, match) {
     for (var i = 0; i < users.list.length; i++) {
 
         exec('wc ' + path + 'logs/' + users.list[i].id.toString() + '.txt', function(err, file_data) {
+
+            var users = {
+                "list" : [
+                    { "id" : 133607928, "cost" : 2.52 }, // Evan Lin
+                    { "id" : 177677828, "cost" : 0.48 }, // Honour Carmichael
+                    { "id" : 177893563, "cost" : 1.52 }, // Carl Velasco
+                    { "id" : 187936081, "cost" : 2.52 }, // Amy Lai
+                    { "id" : 199377811, "cost" : 1.21 }  // Vincent Wolfgramm-Russel
+                ],
+                "num" : 5
+            };
+            
             var n_lines = file_data.toString().split(" ", 3);
             var n_l = n_lines.slice(2, n_lines.length) - 1;
             var tripcost = users.list[i].cost;
