@@ -45,6 +45,7 @@ bot.onText(/\/checkin/, function(msg, match) {
         var n_l = n_lines.slice(2, n_lines.length);
         var tripcost = users[uget_index(userId)].cost;
         var cost_sum = n_l * tripcost + tripcost;
+        var n_rides = n_l + 1; // Number of rides after checkin.
 
         // DATA STRING >>
         var data = '['
@@ -57,7 +58,6 @@ bot.onText(/\/checkin/, function(msg, match) {
 
         // FILE IO >>
         // Make Stats File.
-        var n_rides = n_l;
         var l1 = "NAME: " + userName + ", ";
         var l2 = "RIDES: " + n_rides + ", ";
         var l3 = "SUM: $" + cost_sum + "\n";
@@ -173,9 +173,10 @@ bot.onText(/\/what_is_evan_doing/, function(msg, match) {
 
 ///////////////////////////////////////////////////////////////////// AUTOMATION
 
-cron.schedule('* * * 1 1-12 *', function() {
-    reset_all();
+cron.schedule('* 0 0 1 1-12 *', function() {
     console.log("[RESET request by AUTOMATION: APPROVED]");
+    reset_all();
+    setTimeout(console.log("[RESET request completed.]"), 1000*60*5); // 5min timeout.
 });
 
 function reset_all() {
