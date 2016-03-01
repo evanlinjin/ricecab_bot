@@ -44,8 +44,8 @@ bot.onText(/\/checkin/, function(msg, match) {
         var n_lines = file_data.toString().split(" ", 3);
         var n_l = n_lines.slice(2, n_lines.length);
         var tripcost = users[uget_index(userId)].cost;
-        var cost_sum = n_l * tripcost + tripcost;
-        var n_rides = n_l + 1; // Number of rides after checkin.
+        var cost_sum = n_l * tripcost + tripcost; // costsum after checkin.
+        var n_rides = Number(n_l) + 1; // Number of rides after checkin.
 
         // DATA STRING >>
         var data = '['
@@ -109,6 +109,23 @@ bot.onText(/\/stats/, function(msg, match) {
     var chatId = msg.chat.id;
     var userName = msg.from.first_name + ' ' + msg.from.last_name;
     var userId = msg.from.id;
+
+    // // Attempt to refresh stats.
+    // for (var i = 0; i < users.length; i++) {
+    //
+    //     // Find no. of lines in log file.
+    //     exec('wc ' + path + 'logs/' + users[i].id + '.txt', function(err, file_data) {
+    //         var n_lines = file_data.toString().split(" ", 3);
+    //         var n_rides = n_lines.slice(2, n_lines.length);
+    //         var cost_sum = n_rides * users[i].cost; // Total cost sum.
+    //
+    //         // FILE IO for stats file >>
+    //
+    //     });
+    // }
+
+    // Output Stats >>
+
     var l0 = "** STATS **\n";
 
     exec('cat ' + path + 'stats/*', function(err, file_data) {
