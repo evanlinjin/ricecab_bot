@@ -234,7 +234,7 @@ function send_photo(chat_id, photo_file_dir, caption_desc) {
 var SRA_ride = ['give~aride', 'getaride', 'driveme', 'pick~up', 'need~ride'];
 
 var SRA_morning = ['morning', 'touni'];
-var SRA_evening = ['evening', 'afternoon', 'wayback', 'fromuni'];
+var SRA_evening = ['evening', 'afternoon', 'wayback', 'fromuni', 'backhome', 'ridehome'];
 
 ///////////////////////////////////////////////////////////////////////// Logic.
 
