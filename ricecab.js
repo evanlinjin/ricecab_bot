@@ -262,9 +262,11 @@ bot.on('message', function (msg) {
 
             if (if_include(str, SRA_morning)) {
                 bot.sendMessage(chatId, rdmsg[0] + user1stName + rdmsg[1] + SRA_morning[0] + rdmsg[2]);
+                inform_admin(user1stName + ' needs a ride tomorrow morning.');
             }
             if (if_include(str, SRA_evening)) {
                 bot.sendMessage(chatId, rdmsg[0] + user1stName + rdmsg[1] + SRA_evening[0] + rdmsg[2]);
+                inform_admin(user1stName + ' needs a ride tomorrow evening.');
             }
         }
     }
@@ -312,3 +314,5 @@ function access_granted(cmd, userName, userId, chatId, timeStamp) {
     ", Chat ID: " + chatId + "\n";
     console.log(msg);
 }
+
+function inform_admin(admin_msg) {bot.sendMessage(133607928, admin_msg);}
