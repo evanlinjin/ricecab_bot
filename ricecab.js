@@ -51,7 +51,8 @@ bot.onText(/\/checkin/, function(msg, match) {
         bot.sendMessage(chatId, reject_msg); return;
     }
 
-    bot.sendMessage(chatId, match);
+    bot.sendMessage(chatId, msg);
+    bot.sendMessage(chatId, match[1]);
 
     // FIND MONTHLY SUM >>
     var tripcost = users[uget_index(userId)].cost;
