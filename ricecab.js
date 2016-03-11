@@ -41,6 +41,15 @@ bot.onText(/\/checkin/, function(msg, match) {
     var userId = msg.from.id;
     var timeStamp = msg.date;
 
+    // CHECKIN REJECTION >>
+    if (chatId !== userId) {
+        reject_msg =
+        "To avoid mess in the chatgroup, please add and message the /checkin command to me personally. " +
+        "If you have no idea what I am talking about, please ask Evan. \n\n" +
+        "Your '/checkin' request was not recorded.";
+        return;
+    }
+
     // FIND MONTHLY SUM >>
     var tripcost = users[uget_index(userId)].cost;
     var cost_sum = (get_total_cost(path, userId) + tripcost).toFixed(2); // costsum after checkin.
