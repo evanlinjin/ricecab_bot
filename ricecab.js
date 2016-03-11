@@ -203,18 +203,11 @@ bot.onText(/\/wake_evan_up/, function(msg, match) {
         bot.sendMessage(ricecab_id, "Ringing alarm...");
 
         exec('omxplayer ' + path + 'mp3/alarm.mp3', function(err, io_data) {
-            if (err) {
-                bot.sendMessage(ricecab_id, "ERROR: '/wake_evan_up' Unable to ring alarm.");
-            } else {
-                bot.sendMessage(ricecab_id, "Alarm ended. Let's see if he is up. \n Generating photo...");
-                exec('raspistill -vf -hf -o ' + photo_file_dir, function(err, io_data) {
-                    if (err) {
-                        bot.sendMessage(ricecab_id, "ERROR: '/wake_evan_up' Unable to generate photo.");
-                    } else {
-                        send_photo(ricecab_id, photo_file_dir, timeStamp.toString());
-                    }
-                });
-            }
+            bot.sendMessage(ricecab_id, "Alarm ended. Let's see if he is up. \n Generating photo...");
+
+            exec('raspistill -vf -hf -o ' + photo_file_dir, function(err, io_data) {
+                send_photo(ricecab_id, photo_file_dir, timeStamp.toString());
+            });
         });
     }
 });
