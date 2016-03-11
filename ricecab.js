@@ -45,7 +45,7 @@ bot.onText(/\/checkin/, function(msg, match) {
     // CHECKIN REJECTION >>
     if (chatId !== userId) {
         reject_msg =
-        "To avoid mess in the chatgroup, please add me; @ricecab_bot and message the /checkin command to me personally. " +
+        "Add me; @ricecab_bot and message the /checkin command to me personally. " +
         "If you have no idea what I am talking about, please ask Evan. \n\n" +
         "WARNING: YOUR '/checkin' REQUEST WAS NOT RECORDED.";
         bot.sendMessage(chatId, reject_msg); return;
@@ -194,6 +194,7 @@ bot.onText(/\/what_is_evan_doing/, function(msg, match) {
 
 cron.schedule('* 0 0 1 1-12 *', function() {
     console.log("[RESET request by AUTOMATION: APPROVED]");
+    refresh_stats(path, users);
     reset_all();
     setTimeout(console.log("[RESET request completed.]"), 1000*60*5); // 5min timeout.
 });
