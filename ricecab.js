@@ -171,7 +171,7 @@ bot.onText(/\/what_is_evan_doing/, function(msg, match) {
     var chatId = msg.chat.id;
     var userName = msg.from.first_name + ' ' + msg.from.last_name;
     var userId = msg.from.id;
-    var timeStamp = new Date();
+    var timeStamp = msg.date;
 
     if (msg.chat.id !== ricecab_id) {
         access_denied( '/photo', userName, userId, chatId, timeStamp);
@@ -190,6 +190,34 @@ bot.onText(/\/what_is_evan_doing/, function(msg, match) {
     }
 });
 
+bot.onText(/\/wake_evan_up/, function(msg, match) {
+    var chatId = msg.chat.id;
+    var userName = msg.from.first_name + ' ' + msg.from.last_name;
+    var userId = msg.from.id;
+    var timeStamp = msg.date;
+
+    if (msg.chat.id !== ricecab_id) {
+        access_denied( '/alarm', userName, userId, chatId, timeStamp);
+    } else {
+        access_granted( '/alarm', userName, userId, chatId, timeStamp);
+        bot.sendMessage(ricecab_id, "Ringing alarm...");
+
+        exec('omxplayer ./mp3/alarm.mp3', function(err, io_data) {
+            if (err) {
+                bot.sendMessage(ricecab_id, "ERROR: '/wake_evan_up' Unable to ring alarm.");
+            } else {
+                bot.sendMessage(ricecab_id, "Alarm ended. Let's see if he is up. \n Generating photo...");
+                exec('raspistill -vf -hf -o ' + photo_file_dir, function(err, io_data) {
+                    if (err) {
+                        bot.sendMessage(ricecab_id, "ERROR: '/wake_evan_up' Unable to generate photo.");
+                    } else {
+                        send_photo(ricecab_id, photo_file_dir, timeStamp.toString());
+                    }
+                });
+            }
+        });
+    }
+});
 ///////////////////////////////////////////////////////////////////// AUTOMATION
 
 cron.schedule('* 0 0 1 1-12 *', function() {
@@ -232,10 +260,14 @@ function send_photo(chat_id, photo_file_dir, caption_desc) {
     bot.sendPhoto(chat_id, photo_file_dir, {caption: caption_desc});
 }
 
-///////////////////////////////////////////////////// Speech Recognition Arrays.
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////// Speech Recognition Arrays. //////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////////////////////////////
+
 
 var SRA_ride = ['give~aride', 'getaride', 'driveme', 'pick~up', 'need~ride'];
-
 var SRA_morning = ['morning', 'touni'];
 var SRA_evening = ['evening', 'afternoon', 'wayback', 'fromuni', 'backhome', 'ridehome'];
 
@@ -252,9 +284,6 @@ bot.on('message', function (msg) {
             break;
 
         default:
-        if (str.search('thanks') !== -1) {
-            bot.sendMessage(chatId, "You're Welcome 😘");
-        }
         if (if_include(str, SRA_ride) && if_include(str, 'tomorrow')) {
 
             var rdmsg = [
