@@ -36,7 +36,7 @@ function uget_index(id) {
 //////////////////////////////////////////////// "Ricecab Bot" Logic Definition:
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "/checkin"
 
-bot.onText(/\/checkin/, function(msg, match) {
+bot.onText(/\/checkin (.+)/, function(msg, match) {
     var chatId = msg.chat.id;
     var userName = msg.from.first_name + ' ' + msg.from.last_name;
     var userId = msg.from.id;
@@ -51,7 +51,9 @@ bot.onText(/\/checkin/, function(msg, match) {
         bot.sendMessage(chatId, reject_msg); return;
     }
 
-    bot.sendMessage(chatId, msg.text);
+    if (match.length !== 1) {
+        bot.sendMessage(chatId, "More than 1."); return;
+    }
 
     // FIND MONTHLY SUM >>
     var tripcost = users[uget_index(userId)].cost;
@@ -85,16 +87,17 @@ bot.onText(/\/checkin/, function(msg, match) {
         if(err) {
             bot.sendMessage(chatId, "ERROR: '/checkin' request error.");
             console.log(chatId + " ERROR: '/checkin' request error.");
+            return;
         }
 
         // PREPARE PERSONAL MESSAGE >>
         var checkin_msg = "CHECKIN SUCCESSFUL at '" + timeStamp + "'.\n"
             + "Name: " + userName + ", Cost: $" + tripcost + "\n"
             + "Run /stats for more details.";
-        bot.sendMessage(chatId, checkin_msg);
+        bot.sendMessage(userId, checkin_msg);
 
-        // PREPARE ADMIN MESSAGE >>
-        bot.sendMessage(admin_id, userName + " has checked in.");
+        // PREPARE GLOBAL MESSAGE >>
+        bot.sendMessage(ricecab_id, userName + " has checked in.");
     });
     console.log(data); // CONSOLE LOG.
 
