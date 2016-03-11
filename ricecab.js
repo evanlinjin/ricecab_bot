@@ -301,7 +301,7 @@ function get_n_rides(path, user_id) {
         for (var i = 0; i < file_str.length; i++) {
             if (file_str[i] === '[') { n_checkin += 1; }
         }
-
+        bot.sendMessage(user_id, "within get_n_rides: " + n_checkin);
         return n_checkin;
     });
 }
