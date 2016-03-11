@@ -202,7 +202,7 @@ bot.onText(/\/wake_evan_up/, function(msg, match) {
         access_granted( '/alarm', userName, userId, chatId, timeStamp);
         bot.sendMessage(ricecab_id, "Ringing alarm...");
 
-        exec('omxplayer ./mp3/alarm.mp3', function(err, io_data) {
+        exec('omxplayer ' + path + 'mp3/alarm.mp3', function(err, io_data) {
             if (err) {
                 bot.sendMessage(ricecab_id, "ERROR: '/wake_evan_up' Unable to ring alarm.");
             } else {
