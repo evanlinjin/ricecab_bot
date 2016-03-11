@@ -16,12 +16,13 @@ var path = '/home/pi/ricecab_bot/';
 /////////////////////////////////////////////////////// Load "User Information":
 
 var users = [
-    {id : 133607928, cost: 2.52}, // Evan Lin
-    {id : 177677828, cost: 0.48}, // Honour Carmichael
-    {id : 177893563, cost: 1.52}, // Carl Velasco
-    {id : 187936081, cost: 2.52}, // Amy Lai
-    {id : 199377811, cost: 1.21}, // Vincent Wolfgramm-Russel
-    {id : 197336637, cost: 2.52}  // Jay Shen
+    {id: 133607928, cost: 2.52, name: 'Evan Lin'},
+    {id: 177677828, cost: 0.48, name: 'Honour Carmichael'},
+    {id: 177893563, cost: 1.52, name: 'Carl Velasco'},
+    {id: 187936081, cost: 2.52, name: 'Amy Lai'},
+    {id: 199377811, cost: 1.21, name: 'Vincent Wolfgramm-Russell'}
+    {id: 197336637, cost: 2.52, name: 'Jay Shen'},
+    {id: 175872719, cost: 2.52, name: 'David Long'}
 ];
 
 function uget_index(id) {
@@ -42,7 +43,7 @@ bot.onText(/\/checkin/, function(msg, match) {
 
     // FIND MONTHLY SUM >>
     var tripcost = users[uget_index(userId)].cost;
-    var cost_sum = get_total_cost(path, userId) + tripcost; // costsum after checkin.
+    var cost_sum = (get_total_cost(path, userId) + tripcost).toFixed(2); // costsum after checkin.
     var n_rides = get_n_rides(path, userId) + 1; // Number of rides after checkin.
 
     // DATA STRING >>
@@ -103,14 +104,25 @@ bot.onText(/\/info/, function(msg, match) {
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "/stats"
 bot.onText(/\/stats/, function(msg, match) {
-
     var chatId = msg.chat.id;
-    var userName = msg.from.first_name + ' ' + msg.from.last_name;
-    var userId = msg.from.id;
 
     // Attempt to refresh stats.
     for (var i = 0; i < users.length; i++) {
+        var userId = users[i].id;
+        var userName = users[i].name;
+        var cost_sum = (get_total_cost(path, userId)).toFixed(2);
+        var n_rides = get_n_rides(path, userId);
 
+        var l1 = "NAME: " + userName + ", ";
+        var l2 = "RIDES: " + n_rides + ", ";
+        var l3 = "SUM: $" + cost_sum + "\n";
+
+        fs.writeFile(path + 'stats/' + userId + '.txt', l1 + l2 + l3, function(err) {
+            if(err) {
+                bot.sendMessage(chatId, "ERROR: '/stats' refresh unsuccessful.");
+                console.log(chatId + " ERROR: '/stats' refresh unsuccessful.");
+            }
+        });
     }
 
     // Output Stats >>
