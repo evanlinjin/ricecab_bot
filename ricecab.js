@@ -44,9 +44,9 @@ bot.onText(/\/checkin/, function(msg, match) {
     // CHECKIN REJECTION >>
     if (chatId !== userId) {
         reject_msg =
-        "To avoid mess in the chatgroup, please add and message the /checkin command to me personally. " +
+        "To avoid mess in the chatgroup, please add me; @ricecab_bot and message the /checkin command to me personally." +
         "If you have no idea what I am talking about, please ask Evan. \n\n" +
-        "Your '/checkin' request was not recorded.";
+        "WARNING: YOUR '/checkin' REQUEST WAS NOT RECORDED.";
         bot.sendMessage(chatId, reject_msg); return;
     }
 
