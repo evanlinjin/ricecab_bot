@@ -20,7 +20,7 @@ var users = [
     {id: 177677828, cost: 0.48, name: 'Honour Carmichael'},
     {id: 177893563, cost: 1.52, name: 'Carl Velasco'},
     {id: 187936081, cost: 2.52, name: 'Amy Lai'},
-    {id: 199377811, cost: 1.21, name: 'Vincent Wolfgramm-Russell'}
+    {id: 199377811, cost: 1.21, name: 'Vincent Wolfgramm-Russell'},
     {id: 197336637, cost: 2.52, name: 'Jay Shen'},
     {id: 175872719, cost: 2.52, name: 'David Long'}
 ];
