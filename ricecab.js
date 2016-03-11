@@ -162,6 +162,33 @@ bot.onText(/\/stats/, function(msg, match) {
     });
 });
 
+//>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "/logs"
+bot.onText(/\/logs/, function(msg, match) {
+    var chatId = msg.chat.id;
+
+    // Attempt to refresh stats.
+    refresh_stats(path, users);
+
+    // Make Output dependent on User >>
+    var who_is;
+    switch (chatId) {
+        case ricecab_id: who_is = "*"; break;
+        case admin_id: who_is = "*"; break;
+        default: who_is = msg.from.id + '.txt';
+    }
+
+    // Output Stats >>
+    var l0 = "** LOGS **\n";
+
+    exec('cat ' + path + 'logs/' + who_is, function(err, file_data) {
+        if (err) {
+            bot.sendMessage(chatId, l0 + "Nothing to show.");
+        } else {
+            bot.sendMessage(chatId, l0 + file_data.toString());
+        }
+        console.log("[LOGS request on " + chatId + "]");
+    });
+});
 ///////////////////////////////////////////////////////// ADMINISTRATOR COMMANDS
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "/\"
