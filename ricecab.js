@@ -203,10 +203,10 @@ bot.onText(/\/wake_evan_up/, function(msg, match) {
         bot.sendMessage(ricecab_id, "Ringing alarm...");
 
         exec('omxplayer ' + path + 'mp3/alarm.mp3');
-        bot.sendMessage(ricecab_id, "Alarm ended. Let's see if he is up. \n Generating photo...");
-
-        exec('raspistill -vf -hf -o ' + photo_file_dir);
-        send_photo(ricecab_id, photo_file_dir, timeStamp.toString());
+        setTimeout(exec('raspistill -vf -hf -o ' + photo_file_dir, function(err, io_data) {
+            bot.sendMessage(ricecab_id, "Alarm ended. Let's see if he is awake...");
+            send_photo(ricecab_id, photo_file_dir, timeStamp.toString());
+        }), 10000);
     }
 });
 ///////////////////////////////////////////////////////////////////// AUTOMATION
