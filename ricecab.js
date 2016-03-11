@@ -51,15 +51,25 @@ bot.onText(/\/checkin/, function(msg, match) {
         bot.sendMessage(chatId, reject_msg); return;
     }
 
+    // CUSTOM COST LOGIC >> 'tripcost'
+    var tripcost = users[uget_index(userId)].cost;
+
     var temp_msg = msg.text;
     temp_msg = temp_msg.replace(/\s+/g, '').toLowerCase();
+
     if (msg.text !== '/checkin') {
         temp_msg = temp_msg.slice(8, temp_msg.length);
-        bot.sendMessage(chatId, temp_msg);
+
+        // Find Name.
+        for (int i = 0; i < users.length; i++) {
+            if (temp_msg === (users[i].name).replace(/\s+/g, '').toLowerCase().trim(0, temp_msg.length)) {
+                tripcost = users[i].cost;
+                bot.sendMessage(userId, '/checkin cost set as "' + users[i].name + '".');
+            }
+        }
     }
 
     // FIND MONTHLY SUM >>
-    var tripcost = users[uget_index(userId)].cost;
     var cost_sum = (get_total_cost(path, userId) + tripcost).toFixed(2); // costsum after checkin.
     var n_rides = get_n_rides(path, userId) + 1; // Number of rides after checkin.
 
@@ -100,7 +110,7 @@ bot.onText(/\/checkin/, function(msg, match) {
         bot.sendMessage(userId, checkin_msg);
 
         // PREPARE GLOBAL MESSAGE >>
-        //bot.sendMessage(ricecab_id, userName + " has checked in.");
+        bot.sendMessage(ricecab_id, userName + " has checked in.");
     });
     console.log(data); // CONSOLE LOG.
 
