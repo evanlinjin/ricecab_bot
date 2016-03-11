@@ -289,16 +289,8 @@ function if_include(in_msg, phrases) {
 
 // Get number of rides from specified user.
 function get_n_rides(path, user_id) {
-    var data;
-
-    try { data = fs.readFileSync(path + 'logs/' + user_id + '.txt'); }
-    catch (Error e) {
-        var err_msg = "ERROR: Unable to get number of 'checkin's from " + user_id + ". Assuming 0.";
-        bot.sendMessage(-116496721, err_msg); console.log(-116496721 + err_msg);
-        return 0;
-    }
-
     var n_checkin = 0;
+    var data = fs.readFileSync(path + 'logs/' + user_id + '.txt');
     var file_str = data.toString();
 
     for (var i = 0; i < file_str.length; i++) {
