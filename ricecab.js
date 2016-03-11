@@ -117,12 +117,7 @@ bot.onText(/\/stats/, function(msg, match) {
         var l2 = "RIDES: " + n_rides + ", ";
         var l3 = "SUM: $" + cost_sum + "\n";
 
-        fs.writeFile(path + 'stats/' + userId + '.txt', l1 + l2 + l3, function(err) {
-            if(err) {
-                bot.sendMessage(chatId, "ERROR: '/stats' refresh unsuccessful.");
-                console.log(chatId + " ERROR: '/stats' refresh unsuccessful.");
-            }
-        });
+        fs.writeFileSync(path + 'stats/' + userId + '.txt', l1 + l2 + l3);
     }
 
     // Output Stats >>
