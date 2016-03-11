@@ -41,7 +41,7 @@ bot.onText(/\/checkin/, function(msg, match) {
 
     // FIND MONTHLY SUM >>
     exec('wc ' + path + 'logs/' + userId + '.txt', function(err, file_data) {
-        var n_lines = file_data.toString().split(" ", 3);
+        var n_lines = file_data.toString().split(" ");
         var n_l = n_lines.slice(2, n_lines.length);
         var tripcost = users[uget_index(userId)].cost;
         var cost_sum = n_l * tripcost + tripcost; // costsum after checkin.
@@ -293,6 +293,70 @@ function if_include(in_msg, phrases) {
         }
     }
     return false;
+}
+
+//////////////////////////////////////////////// '/checkin' & '/stats' functions
+
+// Get number of checkin times from specified user.
+function get_n_checkin(path, user_id) {
+    fs.readFile(path + 'logs/' + user_id + '.txt', function(err, data) {
+        if (err) {
+            var err_msg = "ERROR: Unable to get number of 'checkin's from " + user_id + ". Assuming 0.";
+            bot.sendMessage(-116496721, err_msg); console.log(-116496721 + err_msg);
+            return 0;
+        }
+
+        var file_str = data.toString();
+        var n_checkin = 0;
+
+        for (var i = 0; i < file_str.length; i++) {
+            if (file_str[i] === '[') { n_checkin += 1; }
+        }
+
+        return n_checkin;
+    });
+}
+
+// Get total cost from specified user.
+function get_total_cost(path, user_id) {
+    fs.readFile(path + 'logs/' + user_id + '.txt', function(err, data) {
+        if (err) {
+            var err_msg = "ERROR: Unable to get number of 'checkin's from " + user_id + ". Assuming 0.";
+            bot.sendMessage(-116496721, err_msg); console.log(-116496721 + err_msg);
+            return 0.00;
+        }
+
+        // Convert data to lowercase, spaceless string.
+        var file_str = data.toString();
+        file_str = file_str.replace(/\s+/g, '').toLowerCase();
+
+        var cmp_str = 'COST';
+        var total_cost = 0.00;
+
+        for (var i = 0; i < file_str.length; i++) {
+
+            // Find 'COST' in string.
+            if (
+                file_str[i] === cmp_str[0] &&
+                file_str.slice(i, i + cmp_str.length) === cmp_str
+            ) {
+                // Move to after 'COST' term.
+                i += cmp_str.length;
+
+                // Find positions of two preceeding '"'s.
+                var pos_PA = [];
+                while (true) {
+                    if (file_str[i] === '"') { pos_PA.push(i); }
+                    if (pos_PA.length === 2) { break; }
+                    i += 1;
+                }
+
+                // Extract 'COST' value and add to 'total_cost'.
+                total_cost += parseFloat(file_str.slice(pos_PA[0] + 1, pos_PA[1]));
+            }
+        }
+
+    });
 }
 
 ////////////////////////////////////////////////////////// CONSOLE LOG FUNCTIONS
