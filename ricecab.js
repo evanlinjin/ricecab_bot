@@ -307,44 +307,44 @@ function get_n_rides(path, user_id) {
 
 // Get total cost from specified user.
 function get_total_cost(path, user_id) {
-    fs.readFile(path + 'logs/' + user_id + '.txt', function(err, data) {
-        if (err) {
-            var err_msg = "ERROR: Unable to get number of 'checkin's from " + user_id + ". Assuming 0.";
-            bot.sendMessage(-116496721, err_msg); console.log(-116496721 + err_msg);
-        }
+    var data;
 
-        // Convert data to lowercase, spaceless string.
-        var file_str = data.toString();
-        file_str = file_str.replace(/\s+/g, '').toLowerCase();
+    try { data = fs.readFileSync(path + 'logs/' + user_id + '.txt'); }
+    catch (e) {
+        if (e.code === 'ENOENT') {return 0.00;}
+        else {bot.sendMessage(user_id, "ERROR: In function 'get_n_rides'");}
+    }
 
-        var cmp_str = 'COST';
-        var total_cost = 0.00;
+    // Convert data to lowercase, spaceless string.
+    var file_str = data.toString();
+    file_str = file_str.replace(/\s+/g, '').toLowerCase();
 
-        for (var i = 0; i < file_str.length; i++) {
+    var cmp_str = 'COST';
+    var total_cost = 0.00;
 
-            // Find 'COST' in string.
-            if (
-                file_str[i] === cmp_str[0] &&
-                file_str.slice(i, i + cmp_str.length) === cmp_str
-            ) {
-                // Move to after 'COST' term.
-                i += cmp_str.length;
+    for (var i = 0; i < file_str.length; i++) {
 
-                // Find positions of two preceeding '"'s.
-                var pos_PA = [];
-                while (true) {
-                    if (file_str[i] === '"') { pos_PA.push(i); }
-                    if (pos_PA.length === 2) { break; }
-                    i += 1;
-                }
+        // Find 'COST' in string.
+        if (
+            file_str[i] === cmp_str[0] &&
+            file_str.slice(i, i + cmp_str.length) === cmp_str
+        ) {
+            // Move to after 'COST' term.
+            i += cmp_str.length;
 
-                // Extract 'COST' value and add to 'total_cost'.
-                total_cost += parseFloat(file_str.slice(pos_PA[0] + 1, pos_PA[1]));
+            // Find positions of two preceeding '"'s.
+            var pos_PA = [];
+            while (true) {
+                if (file_str[i] === '"') { pos_PA.push(i); }
+                if (pos_PA.length === 2) { break; }
+                i += 1;
             }
+
+            // Extract 'COST' value and add to 'total_cost'.
+            total_cost += parseFloat(file_str.slice(pos_PA[0] + 1, pos_PA[1]));
         }
-        return total_cost;
-    });
-    return 0.00;
+    }
+    return total_cost;
 }
 
 ////////////////////////////////////////////////////////// CONSOLE LOG FUNCTIONS
