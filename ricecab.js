@@ -36,7 +36,7 @@ function uget_index(id) {
 //////////////////////////////////////////////// "Ricecab Bot" Logic Definition:
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "/checkin"
 
-bot.onText(/\/checkin (.+)/, function(msg, match) {
+bot.onText(/\/checkin/, function(msg, match) {
     var chatId = msg.chat.id;
     var userName = msg.from.first_name + ' ' + msg.from.last_name;
     var userId = msg.from.id;
@@ -51,7 +51,12 @@ bot.onText(/\/checkin (.+)/, function(msg, match) {
         bot.sendMessage(chatId, reject_msg); return;
     }
 
-    bot.sendMessage(chatId, 'Length is: ' + match.length);
+    var temp_msg = msg.text;
+    temp_msg = temp_msg.replace(/\s+/g, '').toLowerCase();
+    if (msg.text !== '/checkin') {
+        temp_msg.slice(8, temp_msg.length);
+        bot.sendMessage(chatId, temp_msg);
+    }
 
     // FIND MONTHLY SUM >>
     var tripcost = users[uget_index(userId)].cost;
