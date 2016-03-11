@@ -1,3 +1,5 @@
+require('./ricecab.js');
+
 ///////////////////////////////////////////////////// Speech Recognition Arrays.
 
 var SRA_ride = ['give~aride', 'getaride', 'driveme', 'pick~up', 'need~ride'];
