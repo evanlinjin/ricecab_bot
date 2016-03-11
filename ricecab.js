@@ -44,6 +44,7 @@ bot.onText(/\/checkin/, function(msg, match) {
     var tripcost = users[uget_index(userId)].cost;
     var cost_sum = get_total_cost(path, userId) + tripcost; // costsum after checkin.
     var n_rides = Number(get_n_rides(path, userId)) + 1; // Number of rides after checkin.
+    bot.sendMessage(userId, n_rides);
 
     // DATA STRING >>
     var data = '['
