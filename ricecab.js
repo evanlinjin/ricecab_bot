@@ -289,22 +289,23 @@ function if_include(in_msg, phrases) {
 
 // Get number of rides from specified user.
 function get_n_rides(path, user_id) {
-    return fs.readFile(path + 'logs/' + user_id + '.txt', function(err, data) {
+    var n_checkin = 0;
+
+    fs.readFile(path + 'logs/' + user_id + '.txt', function(err, data) {
         if (err) {
             var err_msg = "ERROR: Unable to get number of 'checkin's from " + user_id + ". Assuming 0.";
             bot.sendMessage(-116496721, err_msg); console.log(-116496721 + err_msg);
-            return 0;
-        }
 
-        var file_str = data.toString();
-        var n_checkin = 0;
+        } else {
+            var file_str = data.toString();
 
-        for (var i = 0; i < file_str.length; i++) {
-            if (file_str[i] === '[') { n_checkin += 1; }
+            for (var i = 0; i < file_str.length; i++) {
+                if (file_str[i] === '[') { n_checkin += 1; }
+            }
         }
-        bot.sendMessage(user_id, "within get_n_rides: " + n_checkin);
-        return n_checkin;
     });
+    bot.sendMessage(user_id, "within get_n_rides: " + n_checkin);
+    return n_checkin;
 }
 
 // Get total cost from specified user.
