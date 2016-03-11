@@ -320,7 +320,7 @@ function get_total_cost(path, user_id) {
     file_str = file_str.replace(/\s+/g, '').toLowerCase();
     bot.sendMessage(user_id, file_str);
 
-    var cmp_str = 'COST';
+    var cmp_str = 'cost';
     var total_cost = 0.00;
 
     for (var i = 0; i < file_str.length; i++) {
