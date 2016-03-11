@@ -10,6 +10,7 @@ var cron = require('node-cron');
 var token = '216808904:AAFqAjnnVVpHmKU4ZsExIMNuUdZX8R49YSQ';
 var bot = new TelegramBot(token, {polling: true});
 var ricecab_id = -116496721;
+var admin_id = 133607928;
 var bank_acc = '12-3086-0261060-00';
 var path = '/home/pi/ricecab_bot/';
 
@@ -90,8 +91,8 @@ bot.onText(/\/checkin/, function(msg, match) {
             + "Run /stats for more details.";
         bot.sendMessage(chatId, checkin_msg);
 
-        // PREPARE GLOBAL MESSAGE >>
-        bot.sendMessage(ricecab_id, userName + " has checked in.");
+        // PREPARE ADMIN MESSAGE >>
+        bot.sendMessage(admin_id, userName + " has checked in.");
     });
     console.log(data); // CONSOLE LOG.
 
@@ -130,10 +131,16 @@ bot.onText(/\/stats/, function(msg, match) {
     }
 
     // Output Stats >>
+    var who_is;
 
+    switch (chatId) {
+        case ricecab_id: who_is = "*"; break;
+        //case admin_id: who_is = "*"; break;
+        default: who_is = msg.from.id + '.txt';
+    }
     var l0 = "** STATS **\n";
 
-    exec('cat ' + path + 'stats/*', function(err, file_data) {
+    exec('cat ' + path + 'stats/' + who_is, function(err, file_data) {
         if (err) {
             bot.sendMessage(chatId, l0 + "Nothing to show.");
         } else {
