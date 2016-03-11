@@ -117,27 +117,17 @@ bot.onText(/\/stats/, function(msg, match) {
     var chatId = msg.chat.id;
 
     // Attempt to refresh stats.
-    for (var i = 0; i < users.length; i++) {
-        var userId = users[i].id;
-        var userName = users[i].name;
-        var cost_sum = (get_total_cost(path, userId)).toFixed(2);
-        var n_rides = get_n_rides(path, userId);
+    refresh_stats(path, users);
 
-        var l1 = "NAME: " + userName + ", ";
-        var l2 = "RIDES: " + n_rides + ", ";
-        var l3 = "SUM: $" + cost_sum + "\n";
-
-        fs.writeFileSync(path + 'stats/' + userId + '.txt', l1 + l2 + l3);
+    // Make Output dependent on User >>
+    var who_is;
+    switch (chatId) {
+        case ricecab_id: who_is = "*"; break;
+        case admin_id: who_is = "*"; break;
+        default: who_is = msg.from.id + '.txt';
     }
 
     // Output Stats >>
-    var who_is;
-
-    switch (chatId) {
-        case ricecab_id: who_is = "*"; break;
-        //case admin_id: who_is = "*"; break;
-        default: who_is = msg.from.id + '.txt';
-    }
     var l0 = "** STATS **\n";
 
     exec('cat ' + path + 'stats/' + who_is, function(err, file_data) {
@@ -368,6 +358,22 @@ function get_total_cost(path, user_id) {
         }
     }
     return total_cost;
+}
+
+// Refresh Statistics.
+function refresh_stats(path, users) {
+    for (var i = 0; i < users.length; i++) {
+        var userId = users[i].id;
+        var userName = users[i].name;
+        var cost_sum = (get_total_cost(path, userId)).toFixed(2);
+        var n_rides = get_n_rides(path, userId);
+
+        var l1 = "NAME: " + userName + ", ";
+        var l2 = "RIDES: " + n_rides + ", ";
+        var l3 = "SUM: $" + cost_sum + "\n";
+
+        fs.writeFileSync(path + 'stats/' + userId + '.txt', l1 + l2 + l3);
+    }
 }
 
 ////////////////////////////////////////////////////////// CONSOLE LOG FUNCTIONS
