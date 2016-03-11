@@ -51,6 +51,8 @@ bot.onText(/\/checkin/, function(msg, match) {
         bot.sendMessage(chatId, reject_msg); return;
     }
 
+    bot.sendMessage(chatId, match);
+
     // FIND MONTHLY SUM >>
     var tripcost = users[uget_index(userId)].cost;
     var cost_sum = (get_total_cost(path, userId) + tripcost).toFixed(2); // costsum after checkin.
@@ -201,9 +203,7 @@ bot.onText(/\/wake_evan_up/, function(msg, match) {
     } else {
         access_granted( '/alarm', userName, userId, chatId, timeStamp);
         bot.sendMessage(ricecab_id, "Ringing alarm...");
-
         exec('omxplayer ' + path + 'mp3/alarm.mp3');
-        setTimeout(bot.sendMessage(ricecab_id, "Alarm ended. Check if Evan is up: /what_is_evan_doing"), 10000);
     }
 });
 ///////////////////////////////////////////////////////////////////// AUTOMATION
