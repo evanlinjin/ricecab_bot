@@ -20,7 +20,8 @@ var users = [
     {id : 177677828, cost: 0.48}, // Honour Carmichael
     {id : 177893563, cost: 1.52}, // Carl Velasco
     {id : 187936081, cost: 2.52}, // Amy Lai
-    {id : 199377811, cost: 1.21}  // Vincent Wolfgramm-Russel
+    {id : 199377811, cost: 1.21}, // Vincent Wolfgramm-Russel
+    {id : 197336637, cost: 2.52}  // Jay Shen
 ];
 
 function uget_index(id) {
@@ -37,56 +38,53 @@ bot.onText(/\/checkin/, function(msg, match) {
     var chatId = msg.chat.id;
     var userName = msg.from.first_name + ' ' + msg.from.last_name;
     var userId = msg.from.id;
-    var timeStamp = new Date();
+    var timeStamp = msg.date;
 
     // FIND MONTHLY SUM >>
-    exec('wc ' + path + 'logs/' + userId + '.txt', function(err, file_data) {
-        var n_lines = file_data.toString().split(" ");
-        var n_l = n_lines.slice(2, n_lines.length);
-        var tripcost = users[uget_index(userId)].cost;
-        var cost_sum = n_l * tripcost + tripcost; // costsum after checkin.
-        var n_rides = Number(n_l) + 1; // Number of rides after checkin.
+    var tripcost = users[uget_index(userId)].cost;
+    var cost_sum = get_total_cost(path, userId) + tripcost; // costsum after checkin.
+    var n_rides = get_n_rides(path, userId) + 1; // Number of rides after checkin.
 
-        // DATA STRING >>
-        var data = '['
-        + 'CHECKIN:"' + timeStamp + '"'
-        + ', NAME:"' + userName + '"'
-        + ', ID:"' + userId + '"'
-        + ', COST:"' + tripcost + '"'
-        + ', MONTHLY_SUM:"' + cost_sum + '"'
-        + ']\n';
+    // DATA STRING >>
+    var data = '['
+    + 'CHECKIN:"' + timeStamp + '"'
+    + ', NAME:"' + userName + '"'
+    + ', ID:"' + userId + '"'
+    + ', COST:"' + tripcost + '"'
+    + ', MONTHLY_SUM:"' + cost_sum + '"'
+    + ']\n';
 
-        // FILE IO >>
-        // Make Stats File.
-        var l1 = "NAME: " + userName + ", ";
-        var l2 = "RIDES: " + n_rides + ", ";
-        var l3 = "SUM: $" + cost_sum + "\n";
+    // FILE IO >>
+    // Make Stats File.
+    var l1 = "NAME: " + userName + ", ";
+    var l2 = "RIDES: " + n_rides + ", ";
+    var l3 = "SUM: $" + cost_sum + "\n";
 
-        fs.writeFile(path + 'stats/' + userId + '.txt', l1 + l2 + l3, function(err) {
-            if(err) {
-                bot.sendMessage(chatId, "ERROR: '/checkin' stats cannot be compiled.");
-                console.log(chatId + " ERROR: '/checkin' stats cannot be compiled.");
-            }
-        });
-
-        // Append to Log File.
-        fs.appendFile(path + 'logs/' + userId + '.txt', data, function(err) {
-            if(err) {
-                bot.sendMessage(chatId, "ERROR: '/checkin' request error.");
-                console.log(chatId + " ERROR: '/checkin' request error.");
-            }
-
-            // PREPARE MESSAGE >>
-            bot.sendMessage(chatId, data);
-            // Inform others if Evan has checked in.
-            if (userId === 133607928) {
-                var evan_msg = "Your driver, " + userName + ", has checked in."
-                + "\nThose who aren't here need to hurry the curry!";
-                bot.sendMessage(ricecab_id, evan_msg);
-            }
-        });
-        console.log(data); // CONSOLE LOG.
+    fs.writeFile(path + 'stats/' + userId + '.txt', l1 + l2 + l3, function(err) {
+        if(err) {
+            bot.sendMessage(chatId, "ERROR: '/checkin' stats cannot be compiled.");
+            console.log(chatId + " ERROR: '/checkin' stats cannot be compiled.");
+        }
     });
+
+    // Append to Log File.
+    fs.appendFile(path + 'logs/' + userId + '.txt', data, function(err) {
+        if(err) {
+            bot.sendMessage(chatId, "ERROR: '/checkin' request error.");
+            console.log(chatId + " ERROR: '/checkin' request error.");
+        }
+
+        // PREPARE PERSONAL MESSAGE >>
+        var checkin_msg = "CHECKIN SUCCESSFUL at '" + timeStamp + "'.\n"
+            + "Name: " + userName + ", Cost: $" + tripcost + "\n"
+            + "Run /stats for more details.";
+        bot.sendMessage(chatId, checkin_msg);
+
+        // PREPARE GLOBAL MESSAGE >>
+        bot.sendMessage(ricecab_id, userName + " has checked in.");
+    });
+    console.log(data); // CONSOLE LOG.
+
 });
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "/info"
@@ -110,19 +108,10 @@ bot.onText(/\/stats/, function(msg, match) {
     var userName = msg.from.first_name + ' ' + msg.from.last_name;
     var userId = msg.from.id;
 
-    // // Attempt to refresh stats.
-    // for (var i = 0; i < users.length; i++) {
-    //
-    //     // Find no. of lines in log file.
-    //     exec('wc ' + path + 'logs/' + users[i].id + '.txt', function(err, file_data) {
-    //         var n_lines = file_data.toString().split(" ", 3);
-    //         var n_rides = n_lines.slice(2, n_lines.length);
-    //         var cost_sum = n_rides * users[i].cost; // Total cost sum.
-    //
-    //         // FILE IO for stats file >>
-    //
-    //     });
-    // }
+    // Attempt to refresh stats.
+    for (var i = 0; i < users.length; i++) {
+
+    }
 
     // Output Stats >>
 
@@ -297,8 +286,8 @@ function if_include(in_msg, phrases) {
 
 //////////////////////////////////////////////// '/checkin' & '/stats' functions
 
-// Get number of checkin times from specified user.
-function get_n_checkin(path, user_id) {
+// Get number of rides from specified user.
+function get_n_rides(path, user_id) {
     fs.readFile(path + 'logs/' + user_id + '.txt', function(err, data) {
         if (err) {
             var err_msg = "ERROR: Unable to get number of 'checkin's from " + user_id + ". Assuming 0.";
@@ -323,7 +312,6 @@ function get_total_cost(path, user_id) {
         if (err) {
             var err_msg = "ERROR: Unable to get number of 'checkin's from " + user_id + ". Assuming 0.";
             bot.sendMessage(-116496721, err_msg); console.log(-116496721 + err_msg);
-            return 0.00;
         }
 
         // Convert data to lowercase, spaceless string.
@@ -355,8 +343,9 @@ function get_total_cost(path, user_id) {
                 total_cost += parseFloat(file_str.slice(pos_PA[0] + 1, pos_PA[1]));
             }
         }
-
+        return total_cost;
     });
+    return 0.00;
 }
 
 ////////////////////////////////////////////////////////// CONSOLE LOG FUNCTIONS
