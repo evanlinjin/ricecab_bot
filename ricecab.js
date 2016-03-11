@@ -43,7 +43,7 @@ bot.onText(/\/checkin/, function(msg, match) {
     // FIND MONTHLY SUM >>
     var tripcost = users[uget_index(userId)].cost;
     var cost_sum = get_total_cost(path, userId) + tripcost; // costsum after checkin.
-    var n_rides = get_n_rides(path, userId); // Number of rides after checkin.
+    var n_rides = get_n_rides(path, userId) + 1; // Number of rides after checkin.
     bot.sendMessage(userId, n_rides);
 
     // DATA STRING >>
@@ -289,7 +289,7 @@ function if_include(in_msg, phrases) {
 
 // Get number of rides from specified user.
 function get_n_rides(path, user_id) {
-    fs.readFile(path + 'logs/' + user_id + '.txt', function(err, data) {
+    return fs.readFile(path + 'logs/' + user_id + '.txt', function(err, data) {
         if (err) {
             var err_msg = "ERROR: Unable to get number of 'checkin's from " + user_id + ". Assuming 0.";
             bot.sendMessage(-116496721, err_msg); console.log(-116496721 + err_msg);
