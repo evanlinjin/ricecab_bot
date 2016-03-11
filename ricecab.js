@@ -61,7 +61,7 @@ bot.onText(/\/checkin/, function(msg, match) {
         temp_msg = temp_msg.slice(8, temp_msg.length);
 
         // Find Name.
-        for (int i = 0; i < users.length; i++) {
+        for (var i = 0; i < users.length; i++) {
             if (temp_msg === (users[i].name).replace(/\s+/g, '').toLowerCase().trim(0, temp_msg.length)) {
                 tripcost = users[i].cost;
                 bot.sendMessage(userId, '/checkin cost set as "' + users[i].name + '".');
