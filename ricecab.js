@@ -64,7 +64,6 @@ bot.onText(/\/checkin/, function(msg, match) {
         for (var i = 0; i < users.length; i++) {
 
             var cmp_str = (users[i].name).replace(/\s+/g, '').toLowerCase();
-            bot.sendMessage(userId, cmp_str);
 
             if (cmp_str.search(temp_msg) === 0) {
                 tripcost = users[i].cost;
