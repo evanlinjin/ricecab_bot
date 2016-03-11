@@ -43,7 +43,7 @@ bot.onText(/\/checkin/, function(msg, match) {
     // FIND MONTHLY SUM >>
     var tripcost = users[uget_index(userId)].cost;
     var cost_sum = get_total_cost(path, userId) + tripcost; // costsum after checkin.
-    var n_rides = get_n_rides(path, userId); n_rides += 1;// Number of rides after checkin.
+    var n_rides = Number(get_n_rides(path, userId)) + 1; // Number of rides after checkin.
 
     // DATA STRING >>
     var data = '['
