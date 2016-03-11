@@ -203,7 +203,7 @@ bot.onText(/\/wake_evan_up/, function(msg, match) {
         bot.sendMessage(ricecab_id, "Ringing alarm...");
 
         exec('omxplayer ' + path + 'mp3/alarm.mp3');
-        setTimeout(bot.sendMessage(ricecab_id, "Alarm ended. Check if Evan is up: /what_is_evan_doing");, 10000);
+        setTimeout(bot.sendMessage(ricecab_id, "Alarm ended. Check if Evan is up: /what_is_evan_doing"), 10000);
     }
 });
 ///////////////////////////////////////////////////////////////////// AUTOMATION
