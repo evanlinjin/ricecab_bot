@@ -166,9 +166,6 @@ bot.onText(/\/stats/, function(msg, match) {
 bot.onText(/\/logs/, function(msg, match) {
     var chatId = msg.chat.id;
 
-    // Attempt to refresh stats.
-    refresh_stats(path, users);
-
     // Make Output dependent on User >>
     var who_is;
     switch (chatId) {
