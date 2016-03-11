@@ -62,7 +62,9 @@ bot.onText(/\/checkin/, function(msg, match) {
 
         // Find Name.
         for (var i = 0; i < users.length; i++) {
-            if (temp_msg === (users[i].name).replace(/\s+/g, '').toLowerCase().trim(0, temp_msg.length)) {
+            var cmp_str = (users[i].name).replace(/\s+/g, '').toLowerCase().trim(0, temp_msg.length);
+            bot.sendMessage(userId, cmp_str);
+            if (temp_msg === cmp_str) {
                 tripcost = users[i].cost;
                 bot.sendMessage(userId, '/checkin cost set as "' + users[i].name + '".');
             }
@@ -109,8 +111,8 @@ bot.onText(/\/checkin/, function(msg, match) {
             + "Run /stats for more details.";
         bot.sendMessage(userId, checkin_msg);
 
-        // PREPARE GLOBAL MESSAGE >>
-        bot.sendMessage(ricecab_id, userName + " has checked in.");
+        // PREPARE ADMIN MESSAGE >>
+        bot.sendMessage(admin_id, userName + " has checked in.");
     });
     console.log(data); // CONSOLE LOG.
 
