@@ -43,8 +43,7 @@ bot.onText(/\/checkin/, function(msg, match) {
     // FIND MONTHLY SUM >>
     var tripcost = users[uget_index(userId)].cost;
     var cost_sum = get_total_cost(path, userId) + tripcost; // costsum after checkin.
-    var n_rides = get_n_rides(path, userId); // Number of rides after checkin.
-    bot.sendMessage(userId, n_rides);
+    var n_rides = get_n_rides(path, userId) + 1; // Number of rides after checkin.
 
     // DATA STRING >>
     var data = '['
@@ -290,14 +289,19 @@ function if_include(in_msg, phrases) {
 // Get number of rides from specified user.
 function get_n_rides(path, user_id) {
     var n_checkin = 0;
-    var data = fs.readFileSync(path + 'logs/' + user_id + '.txt');
+    var data;
+
+    try { data = fs.readFileSync(path + 'logs/' + user_id + '.txt'); }
+    catch (e) {
+        if (e.code === 'ENOENT') {return n_checkin;}
+        else {bot.sendMessage(user_id, "ERROR: In function 'get_n_rides'");}
+    }
+
     var file_str = data.toString();
 
     for (var i = 0; i < file_str.length; i++) {
         if (file_str[i] === '[') { n_checkin += 1; }
     }
-
-    bot.sendMessage(user_id, "within get_n_rides: " + n_checkin);
     return n_checkin;
 }
 
