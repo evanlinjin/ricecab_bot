@@ -54,7 +54,7 @@ bot.onText(/\/checkin/, function(msg, match) {
     var temp_msg = msg.text;
     temp_msg = temp_msg.replace(/\s+/g, '').toLowerCase();
     if (msg.text !== '/checkin') {
-        temp_msg.slice(8, temp_msg.length);
+        temp_msg = temp_msg.slice(8, temp_msg.length);
         bot.sendMessage(chatId, temp_msg);
     }
 
@@ -100,7 +100,7 @@ bot.onText(/\/checkin/, function(msg, match) {
         bot.sendMessage(userId, checkin_msg);
 
         // PREPARE GLOBAL MESSAGE >>
-        bot.sendMessage(ricecab_id, userName + " has checked in.");
+        //bot.sendMessage(ricecab_id, userName + " has checked in.");
     });
     console.log(data); // CONSOLE LOG.
 
