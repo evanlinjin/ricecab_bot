@@ -177,6 +177,7 @@ bot.onText(/\/logs/, function(msg, match) {
         case admin_id: who_is = "*"; break;
         default: who_is = msg.from.id + '.txt';
     }
+    bot.sendMessage(chatId, "Generating logs for set: " + who_is);
 
     // Output Stats >>
     var l0 = "** LOGS **\n";
