@@ -44,11 +44,14 @@ bot.onText(/\/checkin/, function(msg, match) {
 
     // CHECKIN REJECTION >>
     if (chatId !== userId) {
-        reject_msg =
-        "Add me; @ricecab_bot and message the /checkin command to me personally. " +
-        "If you have no idea what I am talking about, please ask Evan. \n\n" +
-        "WARNING: YOUR '/checkin' REQUEST WAS NOT RECORDED.";
-        bot.sendMessage(chatId, reject_msg); return;
+        // reject_msg =
+        // "Add me; @ricecab_bot and message the /checkin command to me personally. " +
+        // "If you have no idea what I am talking about, please ask Evan. \n\n" +
+        // "WARNING: YOUR '/checkin' REQUEST WAS NOT RECORDED.";
+        reject_msg = "Next time, try not to /checkin here. This is a group chat.\n" +
+            "Message me personally 😘.";
+        bot.sendMessage(chatId, reject_msg);
+        //return;
     }
 
     // CUSTOM COST LOGIC >> 'tripcost'
@@ -113,7 +116,8 @@ bot.onText(/\/checkin/, function(msg, match) {
             + "Run /stats for more details.";
         bot.sendMessage(userId, checkin_msg);
 
-        // PREPARE ADMIN MESSAGE >>
+        // PREPARE GROUP & ADMIN MESSAGE >>
+        bot.sendMessage(ricecab_id, userName + " has checked in.");
         bot.sendMessage(admin_id, userName + " has checked in.");
     });
     console.log(data); // CONSOLE LOG.
@@ -186,6 +190,7 @@ bot.onText(/\/logs/, function(msg, match) {
         console.log("[LOGS request on " + chatId + "]");
     });
 });
+
 ///////////////////////////////////////////////////////// ADMINISTRATOR COMMANDS
 
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "/\"
