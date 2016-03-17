@@ -87,7 +87,6 @@ bot.onText(/\/checkin/, function(msg, match) {
     var data = '['
     + 'CHECKIN:"' + timeStamp + '"'
     + ', NAME:"' + userName + '"'
-    + ', ID:"' + userId + '"'
     + ', COST:"' + tripcost + '"'
     + ']\n';
 
@@ -175,11 +174,11 @@ bot.onText(/\/logs/, function(msg, match) {
     // Make Output dependent on User >>
     var who_is;
     switch (chatId) {
-        case ricecab_id: who_is = "*"; break;
+        case ricecab_id: who_is = " "; break;
         case admin_id: who_is = "*"; break;
         default: who_is = msg.from.id + '.txt';
     }
-    bot.sendMessage(chatId, "Generating logs for set: " + who_is);
+    bot.sendMessage(chatId, "Generating logs for set: '" + who_is + "'...");
 
     // Output Stats >>
     var l0 = "** LOGS **\n";
@@ -188,7 +187,7 @@ bot.onText(/\/logs/, function(msg, match) {
         if (err) {
             bot.sendMessage(chatId, l0 + "Nothing to show.");
         } else {
-            bot.sendMessage(chatId, l0 + file_data.toString());
+            bot.sendMessage(chatId, l0 + generate_logs_output(file_data.toString()));
         }
         console.log("[LOGS request on " + chatId + "]");
     });
@@ -367,7 +366,7 @@ function if_include(in_msg, phrases) {
     return false;
 }
 
-//////////////////////////////////////////////// '/checkin' & '/stats' functions
+/////////////////////////////////////// '/checkin', '/stats' & '/logs' functions
 
 // Get number of rides from specified user.
 function get_n_rides(path, user_id) {
@@ -444,6 +443,69 @@ function refresh_stats(path, users) {
 
         fs.writeFileSync(path + 'stats/' + userId + '.txt', l1 + l2 + l3);
     }
+}
+
+// Generate '/logs' output >>
+// Input 'file_str' needs to be a string.
+function generate_logs_output(file_str) {
+    var output = "";
+
+    // Convert data to lowercase, spaceless string.
+    file_str = file_str.replace(/\s+/g, '').toLowerCase();
+
+    // Compare strings.
+    var cs_checkin = 'checkin:';
+    var cs_cost = 'cost:';
+
+    for (var i = 0; i < file_str.length; i++) {
+
+        //............................................ Find 'CHECKIN' in string.
+        if (
+            file_str[i] === cs_checkin[0] &&
+            file_str.slice(i, i + cs_checkin.length) === cs_checkin
+        ) {
+            // Move to after 'CHECKIN' term & find it's contents.
+            i += cs_checkin.length;
+
+            // Find positions of two proceeding '"'s.
+            var pos_PA = [];
+            while (true) {
+                if (file_str[i] === '"') { pos_PA.push(i); }
+                if (pos_PA.length === 2) { break; }
+                i += 1;
+            }
+
+            // Extract epoch timestamp and convert to human readable time.
+            var date_tmp = new Date( parseFloat(file_str.slice(pos_PA[0] + 1, pos_PA[1])) );
+
+            // Add to output.
+            output += date_tmp.toLocaleString();
+            output += " >> $";
+        }
+
+        //............................................... Find 'COST' in string.
+        if (
+            file_str[i] === cs_cost[0] &&
+            file_str.slice(i, i + cs_cost.length) === cs_cost
+        ) {
+            // Move to after 'COST' term & find it's contents.
+            i+= cs_cost.length;
+
+            // Find positions of two proceeding '"'s.
+            var pos_PA = [];
+            while (true) {
+                if (file_str[i] === '"') { pos_PA.push(i); }
+                if (pos_PA.length === 2) { break; }
+                i += 1;
+            }
+
+            // Extract 'COST' value and add to output.
+            output += file_str.slice(pos_PA[0] + 1, pos_PA[1]);
+            output += "\n";
+        }
+    }
+
+    return output;
 }
 
 ////////////////////////////////////////////////////////// CONSOLE LOG FUNCTIONS
