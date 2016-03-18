@@ -185,7 +185,7 @@ bot.onText(/\/logs/, function(msg, match) {
     // Make Output dependent on User >>
     var who_is;
     switch (chatId) {
-        case admin_id: who_is = "*"; break;
+        //case admin_id: who_is = "*"; break;
         default: who_is = msg.from.id + '.txt';
     }
 
