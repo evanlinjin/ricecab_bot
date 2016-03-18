@@ -482,7 +482,9 @@ function generate_logs_output(file_str) {
             }
 
             // Extract epoch timestamp and convert to human readable time.
-            var date_tmp = new Date( parseFloat(file_str.slice(pos_PA[0] + 1, pos_PA[1])) * 1000 );
+            // * 1000 >> For milliseconds.
+            // + 43200 >> For + 12hrs (NZ Time).
+            var date_tmp = new Date( parseFloat(file_str.slice(pos_PA[0] + 1, pos_PA[1])) * 1000 + 43200 );
 
             // Add to output.
             output += date_tmp.toLocaleString();
