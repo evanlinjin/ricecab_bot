@@ -182,37 +182,12 @@ bot.onText(/\/logs/, function(msg, match) {
         return;
     }
 
-    // Make Output dependent on User >>
-    var who_is;
-    var l0;
-    // switch (chatId) {
-    //     //case admin_id: who_is = "*"; break;
-    //     default: who_is = msg.from.id + '.txt';
-    // }
-
-    // // Output Stats >>
-    // var l0 = "** CHECKIN LOG (" + userName.toUpperCase() + ") **\n";
-    //
-    // exec('cat ' + path + 'logs/' + who_is, function(err, file_data) {
-    //     if (err) {
-    //         bot.sendMessage(chatId, l0 + "Nothing to show.");
-    //     } else {
-    //         bot.sendMessage(chatId, l0 + generate_logs_output(file_data.toString()));
-    //     }
-    //     console.log("[LOGS request on " + chatId + "]");
-    // });
-
-    // Output Stats (ADMIN MODE) >>
-
+    // Make Output dependent on User >> Output Stats (ADMIN MODE) >>
     for (var i = 0; i < users.length; i++) {
+        if (chatId === users[i].id || chatId === admin_id) {
 
-        who_is = users[i].id;
-        userName = users[i].name;
-        //l0 = "** CHECKIN LOG (" + users[i].name.toUpperCase() + ") **\n";
-
-        if (chatId === who_is || chatId === admin_id) {
-            exec('cat ' + path + 'logs/' + who_is + '.txt', function(err, file_data) {
-                var l0 = "** CHECKIN LOG (" + userName.toUpperCase() + ") **\n";
+            exec('cat ' + path + 'logs/' + users[i].id + '.txt', function(err, file_data) {
+                var l0 = "** CHECKIN LOG (" + userName + ") **\n";
                 if (err) {
                     bot.sendMessage(chatId, l0 + "Nothing to show.");
                 } else {
@@ -222,7 +197,6 @@ bot.onText(/\/logs/, function(msg, match) {
             });
         }
     }
-
 });
 
 ///////////////////////////////////////////////////////// ADMINISTRATOR COMMANDS
