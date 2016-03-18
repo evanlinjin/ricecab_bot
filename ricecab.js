@@ -159,12 +159,13 @@ bot.onText(/\/stats/, function(msg, match) {
 
     // Output Stats >>
     var l0 = "** STATS **\n";
+    var l1 = "\nRun /logs for even more details."
 
     exec('cat ' + path + 'stats/' + who_is, function(err, file_data) {
         if (err) {
-            bot.sendMessage(chatId, l0 + "Nothing to show.");
+            bot.sendMessage(chatId, l0 + "Nothing to show." + l1);
         } else {
-            bot.sendMessage(chatId, l0 + file_data.toString());
+            bot.sendMessage(chatId, l0 + file_data.toString() + l1);
         }
         console.log("[STATS request on " + chatId + "]");
     });
