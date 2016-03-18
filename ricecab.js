@@ -184,6 +184,7 @@ bot.onText(/\/logs/, function(msg, match) {
 
     // Make Output dependent on User >>
     var who_is;
+    var l0;
     // switch (chatId) {
     //     //case admin_id: who_is = "*"; break;
     //     default: who_is = msg.from.id + '.txt';
@@ -210,9 +211,9 @@ bot.onText(/\/logs/, function(msg, match) {
 
         if (chatId === who_is || chatId === admin_id) {
 
-            var l0 = "** CHECKIN LOG (" + userName.toUpperCase() + ") **\n";
+            l0 = "** CHECKIN LOG (" + userName.toUpperCase() + ") **\n";
 
-            exec('cat ' + path + 'logs/' + who_is, function(err, file_data) {
+            exec('cat ' + path + 'logs/' + who_is + '.txt', function(err, file_data) {
                 if (err) {
                     bot.sendMessage(chatId, l0 + "Nothing to show.");
                 } else {
