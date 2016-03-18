@@ -186,7 +186,7 @@ bot.onText(/\/logs/, function(msg, match) {
     for (var i = 0; i < users.length; i++) {
         if (chatId === users[i].id || chatId === admin_id) {
 
-            exec('cat ' + path + 'logs/' + users[i].id + '.txt', function(err, file_data, un = users[i].name) {
+            exec('cat ' + path + 'logs/' + users[i].id + '.txt', function(err, file_data) {
                 var l0 = "** CHECKIN LOG (" + userName + ") **\n";
                 if (err) {
                     bot.sendMessage(chatId, l0 + "Nothing to show.");
