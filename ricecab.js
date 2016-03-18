@@ -189,17 +189,40 @@ bot.onText(/\/logs/, function(msg, match) {
         default: who_is = msg.from.id + '.txt';
     }
 
-    // Output Stats >>
-    var l0 = "** CHECKIN LOG (" + userName.toUpperCase() + ") **\n";
+    // // Output Stats >>
+    // var l0 = "** CHECKIN LOG (" + userName.toUpperCase() + ") **\n";
+    //
+    // exec('cat ' + path + 'logs/' + who_is, function(err, file_data) {
+    //     if (err) {
+    //         bot.sendMessage(chatId, l0 + "Nothing to show.");
+    //     } else {
+    //         bot.sendMessage(chatId, l0 + generate_logs_output(file_data.toString()));
+    //     }
+    //     console.log("[LOGS request on " + chatId + "]");
+    // });
 
-    exec('cat ' + path + 'logs/' + who_is, function(err, file_data) {
-        if (err) {
-            bot.sendMessage(chatId, l0 + "Nothing to show.");
-        } else {
-            bot.sendMessage(chatId, l0 + generate_logs_output(file_data.toString()));
+    // Output Stats (ADMIN MODE) >>
+
+    for (var i = 0; i < users.length; i++) {
+
+        var who_is = users[i].id;
+        var userName = users[i].name;
+
+        if (chatId === who_is || chatId === admin_id) {
+
+            var l0 = "** CHECKIN LOG (" + userName.toUpperCase() + ") **\n";
+
+            exec('cat ' + path + 'logs/' + who_is, function(err, file_data) {
+                if (err) {
+                    bot.sendMessage(chatId, l0 + "Nothing to show.");
+                } else {
+                    bot.sendMessage(chatId, l0 + generate_logs_output(file_data.toString()));
+                }
+                console.log("[LOGS request on " + chatId + "]");
+            });
         }
-        console.log("[LOGS request on " + chatId + "]");
-    });
+    }
+
 });
 
 ///////////////////////////////////////////////////////// ADMINISTRATOR COMMANDS
