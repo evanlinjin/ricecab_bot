@@ -12,8 +12,8 @@ var bot = new TelegramBot(token, {polling: true});
 var ricecab_id = -116496721;
 var admin_id = 133607928;
 var bank_acc = '12-3086-0261060-00';
-//var path = '/home/pi/ricecab_bot/';
-var path = './';
+var path = '/home/pi/ricecab_bot/';
+//var path = './';
 
 /////////////////////////////////////////////////////// Load "User Information":
 
