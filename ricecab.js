@@ -113,7 +113,7 @@ bot.onText(/\/checkin/, function(msg, match) {
         }
 
         // PREPARE PERSONAL MESSAGE >>
-        var checkin_msg = "CHECKIN SUCCESSFUL at '" + epoch_str_to_date_str(timeStamp.toString()) + "'.\n"
+        var checkin_msg = "CHECKIN SUCCESSFUL at '" + Date(timeStamp) + "'.\n"
             + "Name: " + userName + ", Cost: $" + tripcost + "\n"
             + "Run /stats for more details.";
         bot.sendMessage(userId, checkin_msg);
