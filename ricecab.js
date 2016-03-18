@@ -12,7 +12,8 @@ var bot = new TelegramBot(token, {polling: true});
 var ricecab_id = -116496721;
 var admin_id = 133607928;
 var bank_acc = '12-3086-0261060-00';
-var path = '/home/pi/ricecab_bot/';
+//var path = '/home/pi/ricecab_bot/';
+var path = './';
 
 /////////////////////////////////////////////////////// Load "User Information":
 
@@ -170,18 +171,23 @@ bot.onText(/\/stats/, function(msg, match) {
 //>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> "/logs"
 bot.onText(/\/logs/, function(msg, match) {
     var chatId = msg.chat.id;
+    var userName = msg.from.first_name + ' ' + msg.from.last_name;
+
+    // Quit if /logs request is on group chat >>
+    if (chatId === ricecab_id) {
+        bot.sendMessage(chatId, "Mate, logs are personalised. Don't request to see them here.");
+        return;
+    }
 
     // Make Output dependent on User >>
     var who_is;
     switch (chatId) {
-        case ricecab_id: who_is = " "; break;
         case admin_id: who_is = "*"; break;
         default: who_is = msg.from.id + '.txt';
     }
-    bot.sendMessage(chatId, "Generating logs for set: '" + who_is + "'...");
 
     // Output Stats >>
-    var l0 = "** LOGS **\n";
+    var l0 = "** CHECKIN LOG (" + userName.toUpperCase() + ") **\n";
 
     exec('cat ' + path + 'logs/' + who_is, function(err, file_data) {
         if (err) {
@@ -476,7 +482,7 @@ function generate_logs_output(file_str) {
             }
 
             // Extract epoch timestamp and convert to human readable time.
-            var date_tmp = new Date( parseFloat(file_str.slice(pos_PA[0] + 1, pos_PA[1])) );
+            var date_tmp = new Date( parseFloat(file_str.slice(pos_PA[0] + 1, pos_PA[1])) * 1000 );
 
             // Add to output.
             output += date_tmp.toLocaleString();
