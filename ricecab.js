@@ -118,6 +118,8 @@ bot.onText(/\/checkin/, function(msg, match) {
             + "Run /stats for more details.";
         bot.sendMessage(userId, checkin_msg);
 
+        if (userId === admin_id) { return; }
+
         // PREPARE GROUP & ADMIN MESSAGE >>
         bot.sendMessage(ricecab_id, reject_msg + userName + " has checked in.");
         bot.sendMessage(admin_id, userName + " has checked in.");
