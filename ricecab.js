@@ -486,7 +486,7 @@ function generate_logs_output(file_str) {
             // Extract epoch timestamp and convert to human readable time.
             // * 1000 >> For milliseconds.
             // + 43200 >> For + 12hrs (NZ Time).
-            var date_tmp = new Date( parseFloat(file_str.slice(pos_PA[0] + 1, pos_PA[1])) * 1000 + 43200 );
+            var date_tmp = epoch_str_to_date_str( file_str.slice(pos_PA[0] + 1, pos_PA[1]) );
 
             // Add to output.
             output += date_tmp.toLocaleString();
@@ -539,3 +539,12 @@ function access_granted(cmd, userName, userId, chatId, timeStamp) {
 }
 
 function inform_admin(admin_msg) {bot.sendMessage(133607928, admin_msg);}
+
+///////////////////////////////////////////////////////////////// TIME FUNCTIONS
+
+// Extract epoch timestamp and convert to human readable time.
+// * 1000 >> For milliseconds.
+// + 43200 >> For + 12hrs (NZ Time).
+function epoch_str_to_date_str(epoch_str) {
+    return new Date(parseFloat(epoch_str) * 1000 + 43200);
+}
