@@ -113,7 +113,7 @@ bot.onText(/\/checkin/, function(msg, match) {
         }
 
         // PREPARE PERSONAL MESSAGE >>
-        var checkin_msg = "CHECKIN SUCCESSFUL at '" + Date(timeStamp) + "'.\n"
+        var checkin_msg = "CHECKIN SUCCESSFUL at '" + epoch_str_to_date_str(timeStamp) + "'.\n"
             + "Name: " + userName + ", Cost: $" + tripcost + "\n"
             + "Run /stats for more details.";
         bot.sendMessage(userId, checkin_msg);
@@ -546,5 +546,6 @@ function inform_admin(admin_msg) {bot.sendMessage(133607928, admin_msg);}
 // * 1000 >> For milliseconds.
 // + 43200 >> For + 12hrs (NZ Time).
 function epoch_str_to_date_str(epoch_str) {
-    return new Date(parseFloat(epoch_str) * 1000 + 43200);
+    var date_tmp = new Date(parseFloat(epoch_str) * 1000 + 43200);
+    return date_tmp.toLocaleString();
 }
