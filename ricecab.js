@@ -208,11 +208,9 @@ bot.onText(/\/logs/, function(msg, match) {
 
         who_is = users[i].id;
         userName = users[i].name;
+        l0 = "** CHECKIN LOG (" + userName.toUpperCase() + ") **\n";
 
         if (chatId === who_is || chatId === admin_id) {
-
-            l0 = "** CHECKIN LOG (" + userName.toUpperCase() + ") **\n";
-
             exec('cat ' + path + 'logs/' + who_is + '.txt', function(err, file_data) {
                 if (err) {
                     bot.sendMessage(chatId, l0 + "Nothing to show.");
