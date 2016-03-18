@@ -545,6 +545,6 @@ function inform_admin(admin_msg) {bot.sendMessage(133607928, admin_msg);}
 // Extract epoch timestamp and convert to human readable time.
 // * 1000 >> For milliseconds.
 function epoch_str_to_date_str(epoch_str) {
-    var date_tmp = new Date(parseFloat(epoch_str) * 1000;
+    var date_tmp = new Date(parseFloat(epoch_str) * 1000);
     return date_tmp.toLocaleString();
 }
