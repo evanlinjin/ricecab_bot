@@ -184,10 +184,10 @@ bot.onText(/\/logs/, function(msg, match) {
 
     // Make Output dependent on User >>
     var who_is;
-    switch (chatId) {
-        //case admin_id: who_is = "*"; break;
-        default: who_is = msg.from.id + '.txt';
-    }
+    // switch (chatId) {
+    //     //case admin_id: who_is = "*"; break;
+    //     default: who_is = msg.from.id + '.txt';
+    // }
 
     // // Output Stats >>
     // var l0 = "** CHECKIN LOG (" + userName.toUpperCase() + ") **\n";
@@ -205,8 +205,8 @@ bot.onText(/\/logs/, function(msg, match) {
 
     for (var i = 0; i < users.length; i++) {
 
-        var who_is = users[i].id;
-        var userName = users[i].name;
+        who_is = users[i].id;
+        userName = users[i].name;
 
         if (chatId === who_is || chatId === admin_id) {
 
