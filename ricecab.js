@@ -439,7 +439,7 @@ function get_total_cost(path, user_id) {
 // Get name of user from specified id.
 function get_u_name(file_str) {
 
-    var cmp_str = 'name:';
+    var cmp_str = 'NAME:';
     var output = 'Unspecified';
 
     for (var i = 0; i < file_str.length; i++) {
