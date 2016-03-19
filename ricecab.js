@@ -186,9 +186,19 @@ bot.onText(/\/logs/, function(msg, match) {
     for (var i = 0; i < users.length; i++) {
         if (chatId === users[i].id || chatId === admin_id) {
 
-            var file_data = execSync('cat ' + path + 'logs/' + users[i].id + '.txt');
-            var l0 = "** CHECKIN LOG (" + users[i].name + ") **\n";
-            bot.sendMessage(chatId, l0 + generate_logs_output(file_data.toString()));
+            var file_data;
+
+            try {
+                file_data = execSync('cat ' + path + 'logs/' + users[i].id + '.txt');
+
+            } catch (err) {
+                var l0 = "** CHECKIN LOG (" + get_u_name(file_data.toString()) + ") **\n";
+                if (err) {
+                    bot.sendMessage(chatId, l0 + "Nothing to show.");
+                } else {
+                    bot.sendMessage(chatId, l0 + generate_logs_output(file_data.toString()));
+                }
+            }
 
             // exec('cat ' + path + 'logs/' + users[i].id + '.txt', function(err, file_data) {
             //     var l0 = "** CHECKIN LOG (" + get_u_name(file_data.toString()) + ") **\n";
