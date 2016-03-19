@@ -182,13 +182,11 @@ bot.onText(/\/logs/, function(msg, match) {
         return;
     }
 
-    var file_data;
-
     // Make Output dependent on User >> Output Stats (ADMIN MODE) >>
     for (var i = 0; i < users.length; i++) {
         if (chatId === users[i].id || chatId === admin_id) {
 
-            file_data = exec('cat ' + path + 'logs/' + users[i].id + '.txt');
+            var file_data = execSync('cat ' + path + 'logs/' + users[i].id + '.txt');
             var l0 = "** CHECKIN LOG (" + users[i].name + ") **\n";
             bot.sendMessage(chatId, l0 + generate_logs_output(file_data.toString()));
 
