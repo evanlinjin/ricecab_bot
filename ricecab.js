@@ -189,7 +189,7 @@ bot.onText(/\/logs/, function(msg, match) {
             var file_data;
 
             try {
-                file_data = execSync('cat ' + path + 'logs/' + users[i].id + '.txt');
+                file_data = exec('cat ' + path + 'logs/' + users[i].id + '.txt');
 
             } catch (err) {
                 var l0 = "** CHECKIN LOG (" + get_u_name(file_data.toString()) + ") **\n";
