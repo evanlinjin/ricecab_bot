@@ -187,7 +187,7 @@ bot.onText(/\/logs/, function(msg, match) {
         if (chatId === users[i].id || chatId === admin_id) {
 
             exec('cat ' + path + 'logs/' + users[i].id + '.txt', function(err, file_data) {
-                var l0 = "** CHECKIN LOG (" + userName + ") **\n";
+                var l0 = "** CHECKIN LOG (" + get_u_name(file_data.toString()) + ") **\n";
                 if (err) {
                     bot.sendMessage(chatId, l0 + "Nothing to show.");
                 } else {
@@ -433,6 +433,34 @@ function get_total_cost(path, user_id) {
         }
     }
     return total_cost;
+}
+
+// Get name of user from specified id.
+function get_u_name(file_str) {
+
+    var cmp_str = 'name:';
+
+    for (var i = 0; i < file_str.length; i++) {
+        if (
+            file_str[i] === cmp_str[0] &&
+            file_str.slice(i, i + cmp_str.length) === cmp_str
+        ) {
+            // Move to after 'NAME' term.
+            i += cmp_str.length;
+
+            // Find positions of two preceeding '"'s.
+            var pos_PA = [];
+            while (true) {
+                if (file_str[i] === '"') { pos_PA.push(i); }
+                if (pos_PA.length === 2) { break; }
+                i += 1;
+            }
+
+            // Extract 'NAME' value and return.
+            return file_str.slice(pos_PA[0] + 1, pos_PA[1]);
+        }
+    }
+    return "Unspecified";
 }
 
 // Refresh Statistics.
