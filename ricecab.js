@@ -438,7 +438,7 @@ function get_total_cost(path, user_id) {
 
 // Get name of user from specified id.
 function get_u_name(file_str) {
-
+    bot.sendMessage(133607928, file_str);
     var cmp_str = 'name:';
     var output = 'Unspecified';
 
