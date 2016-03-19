@@ -439,6 +439,7 @@ function get_total_cost(path, user_id) {
 function get_u_name(file_str) {
 
     var cmp_str = 'name:';
+    var output = 'Unspecified';
 
     for (var i = 0; i < file_str.length; i++) {
         if (
@@ -457,10 +458,11 @@ function get_u_name(file_str) {
             }
 
             // Extract 'NAME' value and return.
-            return file_str.slice(pos_PA[0] + 1, pos_PA[1]);
+            output = file_str.slice(pos_PA[0] + 1, pos_PA[1]);
+            break;
         }
     }
-    return "Unspecified";
+    return output;
 }
 
 // Refresh Statistics.
