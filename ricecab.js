@@ -24,7 +24,8 @@ var users = [
     {id: 187936081, cost: 2.52, name: 'Amy Lai'},
     {id: 199377811, cost: 1.21, name: 'Vincent Wolfgramm-Russell'},
     {id: 197336637, cost: 2.52, name: 'Jay Shen'},
-    {id: 175872719, cost: 2.52, name: 'David Long'}
+    {id: 175872719, cost: 2.52, name: 'David Long'},
+    {id: 206943021, cost: 0.48, name: 'Amy Carmichael'}
 ];
 
 function uget_index(id) {
@@ -47,16 +48,6 @@ bot.onText(/\/checkin/, function(msg, match) {
     var reject_msg = (chatId !== userId) ?
         "Next time, try not to /checkin here. This is a group chat.\n" +
         "Message me personally 😘. \n\n" : "";
-
-    //if (chatId !== userId) {
-        // reject_msg =
-        // "Add me; @ricecab_bot and message the /checkin command to me personally. " +
-        // "If you have no idea what I am talking about, please ask Evan. \n\n" +
-        // "WARNING: YOUR '/checkin' REQUEST WAS NOT RECORDED.";
-
-        //bot.sendMessage(chatId, reject_msg);
-        //return;
-    //}
 
     // CUSTOM COST LOGIC >> 'tripcost'
     var tripcost = users[uget_index(userId)].cost;
@@ -460,7 +451,6 @@ function get_u_name(file_str) {
 
             // Extract 'NAME' value and return.
             output = file_str.slice(pos_PA[0] + 1, pos_PA[1]);
-            //bot.sendMessage(133607928, output);
             break;
         }
     }
@@ -568,7 +558,7 @@ function access_granted(cmd, userName, userId, chatId, timeStamp) {
     console.log(msg);
 }
 
-function inform_admin(admin_msg) {bot.sendMessage(133607928, admin_msg);}
+function inform_admin(admin_msg) {bot.sendMessage(admin_id, admin_msg);}
 
 ///////////////////////////////////////////////////////////////// TIME FUNCTIONS
 
